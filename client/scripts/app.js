@@ -4,9 +4,8 @@ var app = {};
 
 app.users = {};
 app.rooms = {};
-app.userRooms = {};
 app.friends = {};
-app.server = 'GET';
+var testData;
 
 app.fetch = function(callback) {
   $.ajax({
@@ -61,7 +60,8 @@ app.addMessage = function(message) {
     if (key === username) {
     }
   }
-  $('<li></li>').text(username + ': '+ text + ' ' + roomname).addClass(username).attr('roomname', roomname).appendTo('#chats');
+  $('<li></li>').text(username + ': '+ text + ' ' + roomname).appendTo('#chats');
+  $('#chats li').data('roomname', roomname);
 };
 
 // clear all chats
@@ -76,13 +76,12 @@ app.refresh = function() {
   });
 };
 
-app.addRoom = function(roomName){
-  app.userRooms[roomName] = true;
-  $('<li></li>').text(roomName).attr('roomname', roomName).appendTo('#roomSelect');
+app.addRoom = function() {
+
 };
 
 app.addFriend = function() {
-  $('#main').class('username');
+
 };
 
 
@@ -92,9 +91,9 @@ app.init = function(obj3,obj4, obj5) {
       for (var key in obj1) {
         $('<option></option>').text(key).appendTo('#users').val(key);
       }
-      // for (var key in obj2) {
-      //   $('<li></li>').text(key).appendTo('#roomSelect').addClass(key);
-      // }
+      for (var key in obj2) {
+        $('<li></li>').text(key).appendTo('#roomSelect').addClass(key);
+      }
     };
 
     app.setLists(obj3,obj4, obj5);
@@ -125,8 +124,9 @@ app.init = function(obj3,obj4, obj5) {
     });
 
     // add room
-    $('#addRoom').click(function() {
-      app.addRoom($('#newRoom').val());
+    $('#addRoom').click(function(event){
+      event.preventDefault();
+      app.rooms[$('#newRoom').val('')] = true;
     });
 
     //change selected user on dropdown
@@ -139,22 +139,17 @@ app.init = function(obj3,obj4, obj5) {
       });
     });
 
-    $('#chats li').click(function() {
-      app.addRoom($(this).attr('roomname'));
-    });
 
-    $('#roomSelect li').click(function() {
-
-      app.showRooms(datobj5a, $(this).attr('roomname'));
-    });
   });
 };
 app.showRooms = function(data, roomClass){
+  //console.log(app.data);
+
   app.clearMessages();
   for (var i = 0; i < data.length; i++) {
-    if (roomClass === data[i].roomname) {
-      app.addMessage(data[i]);
-    }
+      if (roomClass === data[i].roomname) {
+        app.addMessage(data[i]);
+      }
   }
 };
 
