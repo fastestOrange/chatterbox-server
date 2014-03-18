@@ -4,7 +4,7 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-
+var data = {results:[]};
 exports.handleRequest = handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -12,26 +12,34 @@ exports.handleRequest = handleRequest = function(request, response) {
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = "application/json";
+  headers['Content-Type'] = 'application/json';
   var statusCode;
-
   if (request.method === 'GET') {
     statusCode = 200;
+    console.log(data);
     response.writeHead(statusCode, headers);
-    response.end(JSON.stringify({results: [{message:"hello world"}]}));
+    response.end(JSON.stringify(data));
   } else if (request.method === 'POST') {
     statusCode = 201;
-    response.writeHead(statusCode, headers);
-    response.end(JSON.stringify({results: [{messsgae: "POST HAPPENS!!!"}]}));
+    var tempStorage = '';
+    request.on('data', function(chunk){
+      tempStorage+=chunk;
+    });
+    request.on('end', function(){
+
+      data.results.push(JSON.parse(tempStorage));
+      console.log(data);
+      response.writeHead(statusCode, headers);
+      response.end(JSON.stringify({}));
+    });
 
   } else if(request.method === 'OPTIONS'){
     statusCode = 200;
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(null));
   }
-  var url = require('url').parse(request.url);
+  //var url = require('url').parse(request.url);
   //console.log("Serving request type " + request.method + " for url " +  request.url);
-
 
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */

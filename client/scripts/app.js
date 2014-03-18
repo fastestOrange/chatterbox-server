@@ -9,9 +9,9 @@ var testData;
 
 app.fetch = function(callback) {
   $.ajax({
-      url: 'https://api.parse.com/1/classes/chatterbox',
+      url: 'http://127.0.0.1:3000',
       type: 'GET',
-      dataType: 'json',
+      dataType: 'application/json',
       data: {
         //limit: 10,
         order: '-createdAt'
@@ -28,7 +28,7 @@ app.fetch = function(callback) {
           app.users[message.username] = true;
           app.rooms[message.roomname] = true;
         }
-        callback(app.users, app.rooms, data.results);
+        // callback(app.users, app.rooms, data.results);
         $('#roomSelect li').click(function(){app.showRooms(testData, $(this).attr('class'));});
       },
       error: function () {
@@ -38,13 +38,15 @@ app.fetch = function(callback) {
 };
 
 app.send = function(message) {
+    console.log("jumpy jump");
     $.ajax({
-      url: 'https://api.parse.com/1/classes/chatterbox',
+      url: 'http://127.0.0.1:3000',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function () {
-        app.refresh();
+        // app.refresh();
+        console.log("sucess");
       },
       error: function () {
         console.error('chatterbox: Failed to send message');
@@ -100,7 +102,8 @@ app.init = function(obj3,obj4, obj5) {
 
     var username = username || (window.location.search).split('').slice(10).join('');
     $('#usernamedisplay').text(username);
-    $('#sendchat').click(function(){
+    $('#sendchat').click(function(e){
+      console.log("YOU TOO BRUTUS");
       var message = {
         username: username,
         text: $('#chat').val(),
@@ -152,6 +155,6 @@ app.showRooms = function(data, roomClass){
       }
   }
 };
-
-app.fetch(app.init);
+app.init([], [], []);
+// app.fetch(app.init);
 
