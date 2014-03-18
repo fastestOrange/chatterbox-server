@@ -8,31 +8,42 @@
 exports.handleRequest = handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
-
+  // console.log(response);
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
-  if (response === 'GET') {
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = "application/json";
+  var statusCode;
 
+  if (request.method === 'GET') {
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end(JSON.stringify({results: [{message:"hello world"}]}));
+  } else if (request.method === 'POST') {
+    statusCode = 201;
+    response.writeHead(statusCode, headers);
+    response.end(JSON.stringify({results: [{messsgae: "POST HAPPENS!!!"}]}));
+
+  } else if(request.method === 'OPTIONS'){
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end(JSON.stringify(null));
   }
-  //var url = require('url').parse(request.url);
-  console.log("Serving request type " + request.method + " for url " +  request.url);
+  var url = require('url').parse(request.url);
+  //console.log("Serving request type " + request.method + " for url " +  request.url);
 
-  var statusCode = 200;
 
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
-  var headers = defaultCorsHeaders;
-
-  headers['Content-Type'] = "text/plain";
 
   /* .writeHead() tells our server what HTTP status code to send back */
-  response.writeHead(statusCode, headers);
+  //response.writeHead(statusCode, headers);
 
   /* Make sure to always call response.end() - Node will not send
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  response.end(JSON.stringify({results: ["Hello, World!"]}));
+  //response.end(JSON.stringify({results: ["Hello, World!"]}));
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
