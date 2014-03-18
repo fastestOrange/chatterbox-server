@@ -11,7 +11,7 @@ app.fetch = function(callback) {
   $.ajax({
       url: 'http://127.0.0.1:3000',
       type: 'GET',
-      dataType: 'application/json',
+      dataType: 'json',
       data: {
         //limit: 10,
         order: '-createdAt'
@@ -28,7 +28,7 @@ app.fetch = function(callback) {
           app.users[message.username] = true;
           app.rooms[message.roomname] = true;
         }
-        // callback(app.users, app.rooms, data.results);
+        callback(app.users, app.rooms, data.results);
         $('#roomSelect li').click(function(){app.showRooms(testData, $(this).attr('class'));});
       },
       error: function () {
@@ -38,15 +38,13 @@ app.fetch = function(callback) {
 };
 
 app.send = function(message) {
-    console.log("jumpy jump");
     $.ajax({
       url: 'http://127.0.0.1:3000',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function () {
-        // app.refresh();
-        console.log("sucess");
+        app.refresh();
       },
       error: function () {
         console.error('chatterbox: Failed to send message');

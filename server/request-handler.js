@@ -16,7 +16,7 @@ exports.handleRequest = handleRequest = function(request, response) {
   var statusCode;
   if (request.method === 'GET') {
     statusCode = 200;
-    console.log(data);
+    console.log(JSON.stringify(data));
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(data));
   } else if (request.method === 'POST') {
