@@ -11,6 +11,12 @@
     <!-- your scripts -->
     <script src="scripts/config.js"></script>
     <script src="scripts/app.js"></script>
+    <script>
+    /* global $, app */
+      $(function(){
+        app.init();
+      });
+    </script>
   </head>
   <body>
     <div id="main">
@@ -21,7 +27,7 @@
         <option class="selected">Select User</option>
       </select>
       <input type="button" id="addFriend" value="FRIEND">
-      <ul id="chats"></ul>
+      <div id="chats"></div>
     </div>
     <div>
       <input type="text" id="name">

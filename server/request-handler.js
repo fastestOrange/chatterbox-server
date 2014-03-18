@@ -1,22 +1,19 @@
-/* You should implement your request handler function in this file.
- * And hey! This is already getting passed to http.createServer()
- * in basic-server.js. But it won't work as is.
- * You'll have to figure out a way to export this function from
- * this file and include it in basic-server.js so that it actually works.
- * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+
 var data = {results:[]};
 exports.handleRequest = handleRequest = function(request, response) {
-  /* the 'request' argument comes from nodes http module. It includes info about the
-  request - such as what URL the browser is requesting. */
-  // console.log(response);
-  /* Documentation for both request and response can be found at
-   * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
+
+  var routes = {
+    '/messages/' : function(){},
+    '/someotherurl/' : function(){}
+  };
+
+  var url = require('url').parse(request.url);
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = 'application/json';
   var statusCode;
-  if (request.method === 'GET') {
+  if (request.method === 'GET'){
+    routes[url] =
     statusCode = 200;
-    console.log(JSON.stringify(data));
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(data));
   } else if (request.method === 'POST') {
@@ -26,19 +23,16 @@ exports.handleRequest = handleRequest = function(request, response) {
       tempStorage+=chunk;
     });
     request.on('end', function(){
-
       data.results.push(JSON.parse(tempStorage));
-      console.log(data);
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify({}));
     });
-
   } else if(request.method === 'OPTIONS'){
     statusCode = 200;
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(null));
   }
-  //var url = require('url').parse(request.url);
+
   //console.log("Serving request type " + request.method + " for url " +  request.url);
 
   /* Without this line, this server wouldn't work. See the note

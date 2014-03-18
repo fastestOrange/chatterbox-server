@@ -19,21 +19,21 @@ app = {
       //add listeners
       //append class username
       //app.$main.on('click', '.username', app.addFriend);
-      app.$send.on('submit', app.handleSubmit);
+      $('#sendchat').on('click', app.handleSubmit);
       //app.$roomSelect.on('change', app.saveRoom);
 
       //fetch messages
       app.fetch();
     },
 
-    send : function(message) {
+  send : function(message) {
     $.ajax({
-      url: 'http://127.0.0.1:3000',
+      url: 'http://127.0.0.1:3000/send',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function () {
-        $chatMessages.val(''),
+        $('#chat').val(''),
         app.refresh();
       },
       error: function () {
@@ -43,9 +43,10 @@ app = {
   },
 
   handleSubmit : function(event) {
+    var text = $('#chat').val();
     var message = {
       username: app.username,
-      text: $chatMessages.val(),
+      text: text,
       roomname: app.roomname
     };
     app.send(message);
@@ -53,7 +54,7 @@ app = {
   },
 
   fetch : function() {
-  $.ajax({
+    $.ajax({
       url: 'http://127.0.0.1:3000',
       type: 'GET',
       dataType: 'json',
@@ -101,7 +102,10 @@ app = {
     var username = message.username;
     var text = message.text;
     var roomname = message.roomname;
-    $('<li></li>').text('<a>'+ username + '</a>: '+ text + '<a>'+ roomname + '</a>').appendTo(app.$chatHolder);
+    var messageBody = '<br><span><a href="#">'+ username + '</a> : '+ text + '</span>';
+    $(messageBody).html();
+    app.$chatHolder.append(messageBody);
+    // $('<li></li>').html().appendTo(app.$chatHolder);
     // $('#chats li').addClass('roomname');
   },
 
@@ -110,8 +114,6 @@ app = {
   }
 
 };
-
-app.init();
 
 // // clear all chats
 // app.clearMessages = function() {
