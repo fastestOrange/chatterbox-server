@@ -28,7 +28,7 @@ app = {
 
   send : function(message) {
     $.ajax({
-      url: 'http://127.0.0.1:3000/send',
+      url: 'http://127.0.0.1:3000/classes/messages',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
@@ -55,7 +55,7 @@ app = {
 
   fetch : function() {
     $.ajax({
-      url: 'http://127.0.0.1:3000',
+      url: 'http://127.0.0.1:3000/classes/messages',
       type: 'GET',
       dataType: 'json',
       data: {
