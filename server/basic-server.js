@@ -10,6 +10,7 @@ var ip = "127.0.0.1";
 
 var routes = {
   '/classes/messages': importHandleRequest.handleRequest,
+  '/': 'client/index.html'
   //'/classes/users': importHandleRequest.handleUserRequest
 };
 

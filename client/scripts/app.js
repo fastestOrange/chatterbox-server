@@ -67,19 +67,6 @@ app = {
           return;
         }
         app.populateMessages(data.results);
-        //testData = data.results;
-        //app.clearMessages();
-        // for (var i=0; i<11; i++) {
-        //   var message = data.results[i];
-        //   app.addMessage(message);
-        // }
-        // for (var j=0; j<data.results.length; j++) {
-        //   var message = data.results[j];
-        //   app.users[message.username] = true;
-        //   app.rooms[message.roomname] = true;
-        // }
-        // callback(app.users, app.rooms, data.results);
-        //$('#roomSelect li').click(function(){app.showRooms(testData, $(this).attr('class'));});
       },
       error: function () {
         console.error('chatterbox: Failed to get messages');
@@ -115,23 +102,14 @@ app = {
 
 };
 
-// // clear all chats
-// app.clearMessages = function() {
-//   $chatHolder.empty();
-// };
 
-// // get new chats
-// app.refresh = function() {
-//   app.fetch();
-// };
+app.addRoom = function() {
 
-// app.addRoom = function() {
+};
 
-// };
+app.addFriend = function() {
 
-// app.addFriend = function() {
-
-// };
+};
 
 
 // //app.init = function(obj3,obj4, obj5) {
